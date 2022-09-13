@@ -1,6 +1,6 @@
-import openpyxl
 from openpyxl import Workbook, load_workbook
 import xlsxwriter as writer
+from  alive_progress import alive_bar
 
 # file_path = r"C:\Users\susan_ksr4b\Documents\pythonProject\
 # GEBRUDER WISE 2.0 Work Sheet.xlsx"
@@ -24,9 +24,12 @@ new_workbook = writer.Workbook("Template Name.xlsx")
 new_worksheet = new_workbook.add_worksheet()
 
 row, col = 0, 0
-
-for element in list_name:
-    new_worksheet.write(row, col, element)
-    row += 1
-
+title = "Running"
+with alive_bar(len(list_name), title=title, dual_line=True) as bar:
+    for element in list_name:
+        bar.text = f"Writing {element},Please Wait"
+        new_worksheet.write(row, col, element)
+        row += 1
+        bar()
+print("Done👍")
 new_workbook.close()
